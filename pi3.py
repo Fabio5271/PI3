@@ -7,7 +7,7 @@ maze = [
     [1, 0, 1, 0, 0, 0, 1, 0, 0, 1, 0 ,0, 0, 0, 0, 0, 0, 0, 0, 1],
     [1, 0, 1, 0, 1, 0, 0, 0, 0, 0, 0 ,1, 0, 1, 1, 1, 1, 1, 1, 1],
     [1, 0, 1, 0, 1, 1, 1, 1, 0, 1, 0 ,1, 0, 0, 0, 0, 0, 0, 0, 1],
-    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0 ,1, 1, 1, 1, 0, 1, 1, 1, 1],
+    [1, 0, 1, 0, 0, 0, 0, 1, 0, 1, 0 ,1, 1, 0, 1, 0, 1, 1, 1, 1],
     [1, 0, 1, 1, 1, 1, 1, 1, 0, 1, 0 ,0, 1, 0, 1, 0, 0, 0, 0, 0],
     [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0 ,0, 1, 0, 1, 1, 1, 1, 1, 1],
     [1, 1, 1, 0, 1, 1, 1, 1, 0, 1, 0 ,0, 1, 0, 0, 0, 1, 0, 0, 1],
@@ -39,8 +39,8 @@ def make_step(k):
 def print_m(m):
     for i in range(len(m)):
         for j in range(len(m[i])):
-            print( str(m[i][j]).ljust(2),end=' ')
-        print()
+            print( str(m[i][j]).ljust(2),end=' ') # ljust(2) formata o texto com 2 caracteres, end=' ' faz o print por espaço no final em vez de \n (default no python)
+        print() # pula a linha no final de cada matriz 1D dentro de m
 
 def draw_matrix(a,m, the_path = []):
     im = Image.new('RGB', (zoom * len(a[0]), zoom * len(a)), (255, 255, 255))
@@ -74,9 +74,9 @@ def draw_matrix(a,m, the_path = []):
 ##### MAIN #####
 path_m = [] # matriz que vai armazenar o caminho e distâncias:
 for i in range(len(maze)):
-    path_m.append([])
+    path_m.append([]) # Usa append para criar listas vazias dentro de path_m, tornando path_m uma lista de listas (matriz 2D)
     for j in range(len(maze[i])):
-        path_m[-1].append(0) # -1 representa o último item da matriz
+        path_m[-1].append(0) # insere j zeros no final da matriz que o for anterior criou; path_m[-1] representa o último item da matriz
 i,j = start
 path_m[i][j] = 1
 
