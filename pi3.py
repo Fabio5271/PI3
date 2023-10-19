@@ -25,15 +25,15 @@ end = 5,19
 
 def make_step(k):
   for i in range(len(path_m)):
-    for j in range(len(path_m[i])):
-      if path_m[i][j] == k:
-        if i>0 and path_m[i-1][j] == 0 and maze[i-1][j] == 0:
+    for j in range(len(path_m[i])): # Escanear a matriz
+      if path_m[i][j] == k: # Se acharmos k
+        if i>0 and path_m[i-1][j] == 0 and maze[i-1][j] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
           path_m[i-1][j] = k + 1
-        if j>0 and path_m[i][j-1] == 0 and maze[i][j-1] == 0:
+        if j>0 and path_m[i][j-1] == 0 and maze[i][j-1] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
           path_m[i][j-1] = k + 1
-        if i<len(path_m)-1 and path_m[i+1][j] == 0 and maze[i+1][j] == 0:
+        if i<len(path_m)-1 and path_m[i+1][j] == 0 and maze[i+1][j] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
           path_m[i+1][j] = k + 1
-        if j<len(path_m[i])-1 and path_m[i][j+1] == 0 and maze[i][j+1] == 0:
+        if j<len(path_m[i])-1 and path_m[i][j+1] == 0 and maze[i][j+1] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
            path_m[i][j+1] = k + 1
 
 def print_m(m):
@@ -116,6 +116,7 @@ for i in range(10):
         draw_matrix(maze, path_m)
 
 print_m(path_m)
+print("\nCaminho da volta: ")
 print(the_path)
 
 
