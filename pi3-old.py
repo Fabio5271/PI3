@@ -1,4 +1,5 @@
-from PIL import Image, ImageDraw
+from get_api import * # Funções da get_api.py
+from PIL import Image, ImageDraw # Biblioteca que gera o GIF
 images = []
 
 # Matriz do labirinto, 1 para onde tem parede, e 0 para livre:
@@ -23,18 +24,18 @@ borders = 6
 start = 1,1
 end = 5,19
 
-def make_step(k):
+def make_step(step):
   for i in range(len(path_m)):
     for j in range(len(path_m[i])): # Escanear a matriz
-      if path_m[i][j] == k: # Se acharmos k
+      if path_m[i][j] == step: # quando estivermos em step
         if i>0 and path_m[i-1][j] == 0 and maze[i-1][j] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
-          path_m[i-1][j] = k + 1
+          path_m[i-1][j] = step + 1
         if j>0 and path_m[i][j-1] == 0 and maze[i][j-1] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
-          path_m[i][j-1] = k + 1
+          path_m[i][j-1] = step + 1
         if i<len(path_m)-1 and path_m[i+1][j] == 0 and maze[i+1][j] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
-          path_m[i+1][j] = k + 1
+          path_m[i+1][j] = step + 1
         if j<len(path_m[i])-1 and path_m[i][j+1] == 0 and maze[i][j+1] == 0: # Se não tem parede e não anotamos nada nessa posição ainda
-           path_m[i][j+1] = k + 1
+           path_m[i][j+1] = step + 1
 
 def print_m(m):
     for i in range(len(m)):
