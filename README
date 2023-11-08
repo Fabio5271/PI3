@@ -1,3 +1,3 @@
-Para rodar o projeto, utilize o comando:
+Para rodar o projeto, instale o Python 3 e utilize o comando:
 
-python3 -Wi ./navigator.py
+python3 ./navigator.py
