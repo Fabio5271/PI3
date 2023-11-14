@@ -1,8 +1,8 @@
 from get_api import * # Funções da get_api.py
+# from mkimage import * # Funções da mkimage.py
 from collections import deque
-from PIL import Image, ImageDraw # Biblioteca que gera o GIF
 from sys import exit
-images = []
+# all_edges = []
 
 ##### Variáveis Globais #####
 pos = int # Posição atual
@@ -34,8 +34,15 @@ def move(next_pos, silent = False): # Faz o movimento na api e atualiza os valor
 
     if end_reached is True: # Quando a API disser que chegamos no final
         print("\nAchamos o final!!!!!!!!\n")
-        print(f"Caminho do começo pro final:\n{find_path(pos)}") # Mostrar caminho
+        path = find_path(pos)
+        print(f"Caminho do começo pro final:\n{path}") # Mostrar caminho
         show_dist(pos)
+        resp_vald = post_vald(grpid, labrt, path)
+        print(resp_vald)
+        if resp_vald['caminho_valido'] is True:
+            print("Caminho validado!!!")
+        # print(all_edges)
+        # make_img()
         exit(0)
 
 
@@ -45,9 +52,11 @@ def traverse_node(next_pos): # Entra em next_pos, e depois volta pra onde estáv
     move(next_pos)
     dist_cntr = dist[pos] # aumenta a dist
 
+    if pos not in visited:
+            visited.append(pos)
     for i in avail_mov:
         if i not in visited: # se ainda não estiverem, coloca os nós de avail_mov na fila
-            # print(f"{pos} {i}")
+            # all_edges.append([pos, i])
             if i not in queued:
                 vert_q.append(i) # põe o nó na fila
                 queued.append(i)
@@ -67,26 +76,27 @@ def search_node(target):
     print(f'searching for: {target}')
     start_pos = pos # posição na qual a busca começou
     for i in avail_mov: # loop que entra em todos os nós da lista de adj de start_pos
-        print(f'looking into {i}')
-        move(i, True) # entra no nó
-        dist_cntr = dist[pos]
-        print(f"avail_mov: {avail_mov}")
-        
-        if target in avail_mov: # se target estiver na lista de adj do nó que entramos
-            print(f'found {target}!\n')
-            return
-
-        if parent[target] in avail_mov: # se o pai de target estiver na lista de adj do nó que entramos
-            print(f'found parent of {target}!')
-            move(parent[target]) # entra no pai de target
+        if i is not parent[pos]:
+            print(f'looking into {i}')
+            move(i, True) # entra no nó
             dist_cntr = dist[pos]
-            print()
-            return
-        
-        print(f"not found, going back to {start_pos}")
-        move(start_pos) # volta se não achar nada
-        dist_cntr = dist[pos]
-        print(f"avail_mov: {avail_mov}\n")
+            print(f"avail_mov: {avail_mov}")
+            
+            if target in avail_mov: # se target estiver na lista de adj do nó que entramos
+                print(f'found {target}!\n')
+                return
+
+            if parent[target] in avail_mov: # se o pai de target estiver na lista de adj do nó que entramos
+                print(f'found parent of {target}!')
+                move(parent[target]) # entra no pai de target
+                dist_cntr = dist[pos]
+                print()
+                return
+            
+            print(f"not found, going back to {start_pos}")
+            move(start_pos) # volta se não achar nada
+            dist_cntr = dist[pos]
+            print(f"avail_mov: {avail_mov}\n")
     # se ainda não encontramos target:
     long_search_node(target)
 
@@ -126,6 +136,8 @@ def bfs():
             visited.append(pos) # põe nó no dict de visitados
         for i in avail_mov:
             if i not in visited:
+                # if [pos, i] not in all_edges:
+                    # all_edges.append([pos, i])
                 if i not in queued:
                     vert_q.append(i) # põe nó na fila
                     queued.append(i)
@@ -162,8 +174,18 @@ def find_path(pos):       # Encontra o caminho de volta do final pro início uti
 def show_dist(pos):
     global dist
     print(f"Distância: {dist[pos]}")
-    # for i in dist:
-    #     print(f"{i}: {dist[i]}")
+
+
+# def make_img():
+#     global queued, all_edges, start
+#     # nx_graph.add_node(start)
+#     # add_net(queued)
+#     add_edges(all_edges)
+#     nx.draw(nx_graph)
+#     # nt = Network()
+#     # nt.from_nx(nx_graph)
+#     # nt.show('nx.html')
+#     # net.show(net.html)
 
 
 ########## MAIN ##########
@@ -181,16 +203,10 @@ print(f"Iniciando com id '{grpid}'\n")
 resp_iniciar = post_iniciar(grpid, labrt)
 print(resp_iniciar)
 
-pos = resp_iniciar['pos_atual']
-start = pos
-end_reached = resp_iniciar['final']
-avail_mov = resp_iniciar['movimentos'] # lista de adj
-dist[start] = 0
+pos = resp_iniciar['pos_atual'] # Posição atual
+start = pos # Nó onde começamos
+end_reached = resp_iniciar['final'] # Guarda o valor que a API retorna, que indica se chegamos no final
+avail_mov = resp_iniciar['movimentos'] # lista de adjacências do nó atual
+dist[start] = 0 # Define a distância do nó inicial como 0
        
 bfs() # Usa variáveis globais
-
-
-
-# images[0].save('maze.gif',
-#                save_all=True, append_images=images[1:],
-#                optimize=False, duration=1, loop=0)
