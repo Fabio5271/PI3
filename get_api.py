@@ -9,7 +9,7 @@ headers = {'Content-Type': 'application/json',
 
 
 def get_labrts():
-    api_url = '{0}/labirintos'.format(api_url_base)
+    api_url = f'{api_url_base}/labirintos'
     resp = requests.get(api_url, headers=headers, verify=False)
 
     if resp.status_code == 200:
@@ -19,10 +19,10 @@ def get_labrts():
     
 
 def post_iniciar(id, labirinto):
-    api_url = '{0}/iniciar'.format(api_url_base)
+    api_url = f'{api_url_base}/iniciar'
     pload = ('{' +
-             '"id": "{0}",'.format(id) +
-             '"labirinto": "{0}"'.format(labirinto) +
+             f'"id": "{id}",' +
+             f'"labirinto": "{labirinto}"' +
              '}')
     resp = requests.post(api_url, headers=headers, data=pload, verify=False)
     
@@ -33,11 +33,11 @@ def post_iniciar(id, labirinto):
     
 
 def post_movmt(id, labirinto, nova_pos):
-    api_url = '{0}/movimentar'.format(api_url_base)
+    api_url = f'{api_url_base}/movimentar'
     pload = ('{' +
-            '"id": "{0}",'.format(id) +
-            '"labirinto": "{0}",'.format(labirinto) +
-            '"nova_posicao": {0}'.format(nova_pos) +
+            f'"id": "{id}",' +
+            f'"labirinto": "{labirinto}",' +
+            f'"nova_posicao": {nova_pos}' +
             '}')
     resp = requests.post(api_url, headers=headers, data=pload, verify=False)
     
@@ -50,9 +50,9 @@ def post_movmt(id, labirinto, nova_pos):
 def post_vald(id, labirinto, tds_mov):
     api_url = '{0}/validar_caminho'.format(api_url_base)
     pload = ('{' +
-            '"id": "{0}",'.format(id) +
-            '"labirinto": "{0}",'.format(labirinto) +
-            '"todos_movimentos": {0}'.format(tds_mov) +
+            f'"id": "{id}",' +
+            f'"labirinto": "{labirinto}",' +
+            f'"todos_movimentos": {tds_mov}' +
             '}')
     resp = requests.post(api_url, headers=headers, data=pload, verify=False)
     
