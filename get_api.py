@@ -3,7 +3,7 @@ import requests
 from urllib3.exceptions import InsecureRequestWarning
 requests.packages.urllib3.disable_warnings(InsecureRequestWarning) # Desabilitar aviso de SSL
 
-api_url_base = 'https://gtm.delary.dev'
+api_url_base = 'https://gtm.delary.dev' # 'https://gtm.localhost'
 headers = {'Content-Type': 'application/json',
            'accept': 'application/json'}
 
