@@ -1,5 +1,6 @@
 from get_api import * # Funções da get_api.py
 # from mkimage import * # Funções da mkimage.py
+from time import time
 from collections import deque
 from sys import exit
 all_edges = []
@@ -15,10 +16,11 @@ dist = {} # dicionário de distâncias de cada nó para o começo
 parent = {} # dicionaŕio de nós pai
 vert_q = deque() # fila de nós a serem percorridos
 dist_cntr = 1 # contador de distância
+exec_time = 0
 
 
 def move(next_pos, silent = False): # Faz o movimento na api e atualiza os valores no programa local
-    global grpid, labrt, pos, end_reached, avail_mov, parent
+    global grpid, labrt, pos, end_reached, avail_mov, parent, exec_time
     resp_movmt = post_movmt(grpid,labrt,next_pos) # faz o mov na api e guarda o retorno no dicionário 'resp_movmt'
     if silent is False: # Mostrar o output da API
         print(resp_movmt)
@@ -33,7 +35,9 @@ def move(next_pos, silent = False): # Faz o movimento na api e atualiza os valor
         exit(1)
 
     if end_reached is True: # Quando a API disser que chegamos no final
+        exec_time = time() - exec_time
         print("\nAchamos o final!!!!!!!!\n")
+        print(f"Tempo de execução: {round(exec_time, 2)}s")
         path = find_path(pos)
         print(f"Caminho do começo pro final: {path}") # Mostrar caminho
         show_dist(pos)
@@ -177,6 +181,7 @@ labrt = str(get_labrts()[lab_selector])
 grpid = 'Hraki'
 print(f"Iniciando labirinto '{labrt}' com id '{grpid}'\n")
 resp_iniciar = post_iniciar(grpid, labrt)
+exec_time = time()
 
 pos = resp_iniciar['pos_atual'] # Posição atual
 start = pos # Nó onde começamos
